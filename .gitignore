@@ -3,5 +3,6 @@
 .RData
 .Ruserdata
 
-#Ignore data folder
+#Ignore folders
 data/
+reports/
