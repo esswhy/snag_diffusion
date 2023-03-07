@@ -427,7 +427,7 @@ df %>%
 
 ## AD {.tabset}
 
-The right fornix tract was displayed for all positive correlations between AD and DSP wayfinding success for all groups. For all subjects and when separated by sex, there wre few tracts that were both negativey and positive correlated with AD and wayfinding success. Men only displayed positive correlations between AD and performance, and women only displayed the right fornix tract in the positive correlation. Both peris and posts have more positive correlations, whereas pres have more negative correlations.
+The right fornix tract was displayed for all positive correlations between AD and DSP wayfinding success for all groups. For all subjects and when separated by sex, there wre few tracts that were both negativey and positive correlated with AD and wayfinding success. Men only displayed positive correlations between AD and performance, and women only displayed the right fornix tract in the positive correlation. The left and right fornixs tract were displayed for all negative correlations between MD and wayfinding success for all reproductive stages. Both peris and posts have more positive correlations, whereas pres have more negative correlations.
 
 
 ### All Subjects
@@ -827,7 +827,7 @@ df %>%
 
 ## MD {.tabset}
 
-The right fornix tract was displayed for all positive correlations between MD and DSP wayfinding success for all groups. Across all subjects, there are more positive than negative associations. When separated by sex, the left and right fornix were displayed for positive correlations between MD and DSP wayfinding success. Men have positive but no negative correlations between MD and DSP wayfinding success. Both peris and posts have more positive correlations, whereas pres have more negative correlations.
+The right fornix tract was displayed for all positive correlations between MD and DSP wayfinding success for all groups. Across all subjects, there are more positive than negative associations. When separated by sex, the left and right fornix were displayed for positive correlations between MD and DSP wayfinding success. Men have positive but no negative correlations between MD and DSP wayfinding success. The left fornix tract was displayed for all negative correlations between MD and wayfinding success for women and all reproductive stages. Both peris and posts have more positive correlations, whereas pres have more negative correlations.
 
 ### All Subjects
 
@@ -1237,18 +1237,391 @@ df %>%
 
 ## RD {.tabset}
 
+There were only positive tracts displayed for all subjects and for men when for the relationship between RD and DSP wayfinding success. The left and right fornix tracts were displayed for positive correlations for men and women, and the right fornix tract was commonly displayed among all reproductive stage groups for positive associations. The left fornix tracts was displayed among women and all reproductive groups for negative correlations between RD and wayfinding success. Pres had more negative correlations, whereas peris and posts had more positive correlations.
+
 ### All Subjects
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.007701) </span></font></bold>
+
+```{r rd_pos_wayfinding_all}
+#All subjects positive
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_pos_dsp_wayfinding_all.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 1.000000) </span></font></bold>
+
+"No significant results in tracts" *and* all tracts < 10.
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/wayfinding_success/rd/rd_pos_dsp_wayfinding_all_coronal.png){width=50%}
+
+![](../images/dsp/wayfinding_success/rd/glass_brain/rd_posneg_dsp_wayfinding_all_glass.jpg)
+
+</center>
+<br>
 
 ### Men
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.009969) </span></font></bold>
+
+```{r rd_pos_wayfinding_men}
+#Men positive
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_pos_dsp_wayfinding_men.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 1.000000) </span></font></bold>
+
+No significant results in tracts.
+
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/wayfinding_success/rd/rd_pos_dsp_wayfinding_men_coronal.png){width=50%}
+
+![](../images/dsp/wayfinding_success/rd/glass_brain/rd_posneg_dsp_wayfinding_men_glass.jpg)
+
+</center>
+<br>
+
 ### Women
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.297806) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_pos_wayfinding_women}
+#Women positive
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_pos_dsp_wayfinding_women.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.116981) </span></font></bold>
+
+```{r rd_neg_wayfinding_women}
+#Women negative
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_neg_dsp_wayfinding_women.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/wayfinding_success/rd/rd_posneg_dsp_wayfinding_women_coronal.png){width=50%}
+
+
+![Positive tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_pos_dsp_wayfinding_women_glass.jpg)
+
+![Negative tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_neg_dsp_wayfinding_women_glass.jpg)
+
+</center>
+<br>
 
 ### Pre
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.830275) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_pos_wayfinding_pre}
+#Pre positive
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_pos_dsp_wayfinding_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.254985) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_neg_wayfinding_pre}
+#Pre negative
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_neg_dsp_wayfinding_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/wayfinding_success/rd/rd_posneg_dsp_wayfinding_pre_coronal.png){width=50%}
+
+
+![Positive tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_pos_dsp_wayfinding_pre_glass.jpg)
+
+![Negative tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_neg_dsp_wayfinding_pre_glass.jpg)
+
+</center>
+<br>
+
 ### Peri
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.272899) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_pos_wayfinding_peri}
+#Peri positive
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_pos_dsp_wayfinding_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 1.000000) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_neg_wayfinding_peri}
+#Peri negative
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_neg_dsp_wayfinding_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/wayfinding_success/rd/rd_posneg_dsp_wayfinding_peri_coronal.png){width=50%}
+
+
+![Positive tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_pos_dsp_wayfinding_peri_glass.jpg)
+
+![Negative tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_neg_dsp_wayfinding_peri_glass.jpg)
+
+</center>
+<br>
 
 ### Post
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.225851) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_pos_wayfinding_post}
+#Post positive
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_pos_dsp_wayfinding_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.468263) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_neg_wayfinding_post}
+#Post negative
+df <- read_csv(here("data", "dsp", "wayfinding_success", "rd",
+                    "rd_neg_dsp_wayfinding_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/wayfinding_success/rd/rd_posneg_dsp_wayfinding_post_coronal.png){width=50%}
+
+![Positive tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_pos_dsp_wayfinding_post_glass.jpg)
+
+![Negative tracts.](../images/dsp/wayfinding_success/rd/glass_brain/rd_neg_dsp_wayfinding_post_glass.jpg)
+
+</center>
+<br>
 
 ## {-}
 
@@ -1258,34 +1631,799 @@ df %>%
 
 ## QA {.tabset}
 
+There were more negative correlations with tracts between QA and DSP solution index for almost all groups, with main tracts in the corpus callosum. Men and women also show more negative correlations with QA and DSP solution index, and reproductive groups show majority of negative correlations as well.
+
 ### All Subjects
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.643432) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r qa_pos_solution_all}
+#All subjects positive
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_pos_dsp_solution_all.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000625) </span></font></bold>
+
+```{r qa_neg_solution_all}
+#All subjects negative
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_neg_dsp_solution_all.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_all_coronal.png){width=50%}
+
+![Positive tracts.](../images/dsp/solution_index/qa/glass_brain/qa_pos_dsp_solution_all_glass.jpg)
+
+![Negative tracts.](../images/dsp/solution_index/qa/glass_brain/qa_neg_dsp_solution_all_glass.jpg)
+
+</center>
+<br>
 
 ### Men
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.005155) </span></font></bold>
+
+
+```{r qa_pos_solution_men}
+#Men positive
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_pos_dsp_solution_men.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.001159) </span></font></bold>
+
+```{r qa_neg_solution_men}
+#Men negative
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_neg_dsp_solution_men.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_men_coronal.png){width=50%}
+
+![](../images/dsp/solution_index/qa/glass_brain/qa_posneg_dsp_solution_men_glass.jpg)
+
+</center>
+<br>
+
 ### Women
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.019608) </span></font></bold>
+
+```{r qa_pos_solution_women}
+#Women positive
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_pos_dsp_solution_women.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000551) </span></font></bold>
+
+```{r qa_neg_solution_women}
+#Women negative
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_neg_dsp_solution_women.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_women_coronal.png){width=50%}
+
+![](../images/dsp/solution_index/qa/glass_brain/qa_posneg_dsp_solution_women_glass.jpg)
+</center>
+<br>
 
 ### Pre
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.001342) </span></font></bold>
+
+```{r qa_pos_solution_pre}
+#Pre positive
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_pos_dsp_solution_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.008445) </span></font></bold>
+
+```{r qa_neg_solution_pre}
+#Pre negative
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_neg_dsp_solution_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_pre_coronal.png){width=50%}
+
+![](../images/dsp/solution_index/qa/glass_brain/qa_posneg_dsp_solution_pre_glass.jpg)
+</center>
+<br>
+
 ### Peri
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.410256) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r qa_pos_solution_peri}
+#Peri positive
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_pos_dsp_solution_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.013692) </span></font></bold>
+
+```{r qa_neg_solution_peri}
+#Peri negative
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_neg_dsp_solution_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_peri_coronal.png){width=50%}
+
+
+![Positive tracts.](../images/dsp/solution_index/qa/glass_brain/qa_pos_dsp_solution_peri_glass.jpg)
+![Negative tracts.](../images/dsp/solution_index/qa/glass_brain/qa_neg_dsp_solution_peri_glass.jpg)
+
+</center>
+<br>
+
 ### Post
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.004243) </span></font></bold>
+
+
+```{r qa_pos_solution_post}
+#Post positive
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_pos_dsp_solution_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000235) </span></font></bold>
+
+```{r qa_neg_solution_post}
+#Post negative
+df <- read_csv(here("data", "dsp", "solution_index", "qa",
+                    "qa_neg_dsp_solution_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_post_coronal.png){width=50%}
+
+
+![](../images/dsp/solution_index/qa/glass_brain/qa_posneg_dsp_solution_post_glass.jpg)
+</center>
+<br>
 
 
 ## {-}
 
 ## AD {.tabset}
 
+The right fornix tract was commonly displayed with negative correlations with AD and  DSP solution index for all groups. There were no significant results in tracts for positive correlations among all subjects and women groups. Most tracts were found in negative correlations with AD and DSP solution index. Among reproductive stage, peris had more positive correlations while pres and posts mainly had negative correlations.
+
 ### All Subjects
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 1.000000) </span></font></bold>
+
+No significant results in tracts.
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000130) </span></font></bold>
+
+```{r ad_neg_solution_all}
+#All subjects negative
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_neg_dsp_solution_all.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/ad/ad_neg_dsp_solution_all_coronal.png){width=50%}
+
+![](../images/dsp/solution_index/ad/glass_brain/ad_posneg_dsp_solution_all_glass.jpg)
+</center>
+<br>
+
 
 ### Men
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.346154) </span></font></bold>
+
+"No significant results in tracts."
+
+
+```{r ad_pos_solution_men}
+#Men positive
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_pos_dsp_solution_men.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.586127) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r ad_neg_solution_men}
+#Men negative
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_neg_dsp_solution_men.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/qa/qa_posneg_dsp_solution_men_coronal.png){width=50%}
+
+
+![Positive tracts.](../images/dsp/solution_index/ad/glass_brain/ad_pos_dsp_solution_men_glass.jpg)
+
+![Negative tracts.](../images/dsp/solution_index/ad/glass_brain/ad_neg_dsp_solution_men_glass.jpg)
+</center>
+<br>
+
+
 ### Women
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 1.000000) </span></font></bold>
+
+No significant results in tracts.
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000139) </span></font></bold>
+
+
+```{r ad_neg_solution_women}
+#Women negative
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_neg_dsp_solution_women.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/ad/ad_neg_dsp_solution_women_coronal.png){width=50%}
+
+
+![](../images/dsp/solution_index/ad/glass_brain/ad_posneg_dsp_solution_women_glass.jpg)
+</center>
+<br>
 
 ### Pre
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.166667) </span></font></bold>
+
+All tracts < 10.
+
+```{r ad_pos_solution_pre}
+#Pre positive
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_pos_dsp_solution_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) 
+#%>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000702) </span></font></bold>
+
+
+```{r ad_neg_solution_pre}
+#Pre negative
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_neg_dsp_solution_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/ad/ad_posneg_dsp_solution_pre_coronal.png){width=50%}
+
+
+![](../images/dsp/solution_index/ad/glass_brain/ad_posneg_dsp_solution_pre_glass.jpg)
+</center>
+<br>
+
 ### Peri
 
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.231995) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r ad_pos_solution_peri}
+#Peri positive
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_pos_dsp_solution_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.515029) </span></font></bold>
+
+"No significant results in tracts."
+
+
+```{r ad_neg_solution_peri}
+#Peri negative
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_neg_dsp_solution_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/ad/ad_posneg_dsp_solution_peri_coronal.png){width=50%}
+
+![Positive tracts.](../images/dsp/solution_index/ad/glass_brain/ad_pos_dsp_solution_peri_glass.jpg)
+
+![Negative tracts.](../images/dsp/solution_index/ad/glass_brain/ad_neg_dsp_solution_peri_glass.jpg)
+</center>
+<br>
+
 ### Post
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR = 0.025641) </span></font></bold>
+
+```{r ad_pos_solution_post}
+#Post positive
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_pos_dsp_solution_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.000581) </span></font></bold>
+
+```{r ad_neg_solution_post}
+#Post negative
+df <- read_csv(here("data", "dsp", "solution_index", "ad",
+                    "ad_neg_dsp_solution_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% 
+  filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/dsp/solution_index/ad/ad_posneg_dsp_solution_post_coronal.png){width=50%}
+
+
+![](../images/dsp/solution_index/ad/glass_brain/ad_posneg_dsp_solution_post_glass.jpg)
+</center>
+<br>
 
 
 ## {-}
