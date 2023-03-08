@@ -3,7 +3,8 @@
 .RData
 .Ruserdata
 
-#Ignore folders
+#Ignore folders and files
+code/dsi_dsp.html
 data/
 images/
 reports/
