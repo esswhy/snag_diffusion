@@ -1,0 +1,69 @@
+---
+title: "DSI Connectometry: Midlife Hormones"
+author: "Shuying Yu"
+date: "3/7/2023"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    theme: flatly
+---
+
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
+                      fig.align = "center")
+
+#Attach libraries 
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(kableExtra)
+library(sjmisc)
+library(snakecase)
+```
+
+# Overview
+
+**Participants**
+
+- *n* = 120 total midlife with DSI scans
+- *n* = 118 useable DSI scans (removed subjects 329 and 372)
+
+After preprocessing and quality control, subject 347 was removed as well due to being an outlier.
+
+Hormone measures: estradiol, progesterone, FSH, testosterone
+
+- *n* = 32 for men (testosterone only)
+- *n* = 86 for women
+- *n* = 32 for pre
+- *n* = 28 for peri
+- *n* = 26 for post
+
+
+**DSI Studio**
+
+DSI Studio GUI version: chen-2022-06-09
+
+This is same as version and tag used in Docker, which is: chen-2022-07-31
+
+
+**Parameters**
+
+- T-threshold = 2.5
+- Length = 25
+- Permutation = 4,000
+- Pruning = 4
+- Non-normalized QA
+
+# Methods
+
+A diffusion spectrum imaging scheme was used, and a total of 128 diffusion sampling were acquired. The maximum b-value was 4990 s/mm². The in-plane resolution was 1.8 mm. The slice thickness was 1.8 mm. The accuracy of b-table orientation was examined by comparing fiber orientations with those of a population-averaged template (Yeh et al. Neuroimage, 2018). The b-table was flipped by .012fy. The diffusion data were reconstructed in the MNI space using q-space diffeomorphic reconstruction (Yeh et al., Neuroimage, 58(1):91-9, 2011) to obtain the spin distribution function (Yeh et al., IEEE TMI, ;29(9):1626-35, 2010). A diffusion sampling length ratio of 1.25 was used. The output resolution in diffeomorphic reconstruction was 1.8 mm isotropic. The tensor metrics were calculated using DWI with b-value lower than 1750 s/mm². The quantitative anisotropy was extracted as the local connectome fingerprint (LCF, Yeh et al. PLoS Comput Biol 12(11): e1005203) and used in the connectometry analysis.
+
+Diffusion MRI connectometry (Yeh et al. NeuroImage 125 (2016): 162-171) was used to derive the correlational tractography that has QA, AD, MD, RD correlated with either hormone measure (estradiol, progesterone, FSH, testosterone). A nonparametric Spearman partial correlation was used to derive the correlation, and the effect of sex_binary, age_spatial_years, and repo_status_dummy was removed using a multiple regression model (*depending on whether looking by sex or reproductive status*). Different number of subjects were included in the analysis depending on the group. 
+
+A T-score threshold of 2.5 was assigned and tracked using a deterministic fiber tracking algorithm (Yeh et al. PLoS ONE 8(11): e80713, 2013) to obtain correlational tractography. A seeding region was placed at whole brain. The tracks were filtered by topology-informed pruning (Yeh et al. Neurotherapeutics, 16(1), 52-58, 2019) with 4 iteration(s). A length threshold of 25 voxel distance was used to select tracks. To estimate the false discovery rate, a total of 4000 randomized permutations were applied to the group label to obtain the null distribution of the track length.
+
+Older version of DSI studio reports "no significant results in tracts" even though there are significant tracts, so that is reported in quotes. For reports where there are absolutely no tracts showing up in the results, then there really are no significant results in tracts. For those that state "no significant results in tracts" and also have all tracts < 10, then results are neglibigle and can be ignored.
+
