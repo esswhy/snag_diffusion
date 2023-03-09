@@ -2777,6 +2777,8 @@ df %>%
 
 ## RD {.tabset}
 
+The left and right fornix tracts were commonly displayed as significant tracts for positive correlations for women and all reproductive stage groups. There were few tracts with negative correlations among all groups, but they consisted of the left and/or right cerebellum. In women, there were more tracts with positive than negative correlations between RD and FSH. Pres and peris mainly had significant tracts that have positive correlations with RD and FSH. Posts have tracts for both positive and negative correlations.
+
 ### Women
 
 <span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR =  0.032295) </span></font></bold>
@@ -2851,9 +2853,188 @@ df %>%
 
 ### Pre
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR =  0.019529) </span></font></bold>
+
+```{r rd_pos_fsh_pre}
+#Pre positive
+df <- read_csv(here("data", "hormones", "fsh", "rd",
+                    "rd_pos_fsh_pre.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 1.000000) </span></font></bold>
+
+"No significant results in tracts" *and* all tracts were < 10.
+
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/hormones/fsh/rd/rd_pos_fsh_pre_coronal.png){width=50%}
+
+![](../images/hormones/fsh/rd/glass_brain/rd_posneg_fsh_pre_glass.jpg)
+
+</center>
+<br>
+
 ### Peri
 
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR =  0.026196) </span></font></bold>
+
+```{r rd_pos_fsh_peri}
+#Peri positive
+df <- read_csv(here("data", "hormones", "fsh", "rd",
+                    "rd_pos_fsh_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.003807) </span></font></bold>
+
+```{r rd_neg_fsh_peri}
+#Peri negative
+df <- read_csv(here("data", "hormones", "fsh", "rd",
+                    "rd_neg_fsh_peri.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/hormones/fsh/rd/rd_posneg_fsh_peri_coronal.png){width=50%}
+
+
+![](../images/hormones/fsh/rd/glass_brain/rd_posneg_fsh_peri_glass.jpg)
+
+</center>
+<br>
+
 ### Post
+
+<span style="color: #ff5500;"><font size="5"><bold> Positive Correlations (FDR =  0.000524) </span></font></bold>
+
+```{r rd_pos_fsh_post}
+#Post positive
+df <- read_csv(here("data", "hormones", "fsh", "rd",
+                    "rd_pos_fsh_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+<br>
+<span style="color: #00ffff;"><font size="5"><bold> Negative Correlations (FDR = 0.967391) </span></font></bold>
+
+"No significant results in tracts."
+
+```{r rd_neg_fsh_post}
+#Post negative
+df <- read_csv(here("data", "hormones", "fsh", "rd",
+                    "rd_neg_fsh_post.csv")) %>% 
+  clean_names() %>% 
+  filter(tract_name %in% c("number of tracts","mean length(mm)",
+                          "diameter(mm)", "volume(mm^3)")) %>% 
+  rotate_df() %>% row_to_names(row_number = 1) %>% 
+  rownames_to_column("tract_name") %>% 
+  mutate(tract_name = to_any_case(tract_name,"upper_camel", sep_out = "_")) %>% 
+  mutate_at(c(2:5), as.numeric) %>% filter(`number of tracts` >= 10)
+
+#Present table
+df %>% 
+  kable(col.names = c("Tract Name", "Number of Tracts", "Mean Length (mm)",
+                      "Diameter (mm)", "Volume (mm^3)"),
+        digits = 3,
+        table.attr = "style='width:90%;'"
+        ) %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  scroll_box(width = "800px", height = "200px")
+```
+
+
+
+<br>
+<font size="5"> Figures </font>
+
+<center>
+![](../images/hormones/fsh/rd/rd_posneg_fsh_post_coronal.png){width=50%}
+
+
+![Positive tracts.](../images/hormones/fsh/rd/glass_brain/rd_pos_fsh_post_glass.jpg)
+
+![Negative tracts.](../images/hormones/fsh/rd/glass_brain/rd_neg_fsh_post_glass.jpg)
+
+</center>
+<br>
 
 ## {-}
 
