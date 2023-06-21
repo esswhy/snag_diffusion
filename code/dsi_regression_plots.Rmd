@@ -1,0 +1,192 @@
+---
+title: "DSI Analysis"
+author: "Shuying Yu"
+date: "5/24/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo = FALSE,
+                      fig.align = "center")
+
+#Attach libraries 
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(kableExtra)
+library(sjmisc)
+library(snakecase)
+library(patchwork)
+```
+
+
+# Overview
+
+This is the markdown for generating regression plots for significant tracts from the connectometry analysis
+
+```{r data-hormones}
+#Read in the data
+df_hormones <- read_csv(here("data", "hormones", 
+                    "dsi_hormones_women_tracts.csv")) %>% 
+  clean_names() %>% 
+  
+  #Reorder 
+
+
+#Color scale
+  
+  #Change color of points
+  #scale_color_manual(values = c("cadetblue4", "mediumvioletred", "darkorange")) +
+```
+
+
+
+# Estradiol
+
+## QA
+
+Women with only negative correlations with left cingulum bundle and cingulum frontal parahippocampal
+
+```{r qa-women}
+#L Cingulum
+a <- ggplot(data = df_hormones, aes(x = qa_e_cingulum_frontal_parietal_l,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "cyan3",
+             size = 3, alpha = 0.6) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Left Cingulum \nFrontal Parietal",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#L Cingulum Frontal Parahipp
+b <- ggplot(data = df_hormones, aes(x = qa_e_cingulum_frontal_parahippocampal_l,
+                               y = estradiol_scan_pg_ml)) +
+  
+  #Define scatter, change size and alpha
+  geom_point(color = "cyan3",
+             size = 3, alpha = 0.6, show.legend = FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Left Cingulum \nFrontal Parahippocampal",
+       tag = "B",
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#Plot it
+a+b
+ggsave("qa_e_women.png", dpi=1200)
+```
+## MD
+
+```{r}
+#L fornix
+ggplot(data = df_hormones, aes(x = md_e_fornix_l,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(aes(color = repo_status),
+             size = 3, alpha = 0.6) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  scale_color_manual(values = c("cadetblue4", "mediumvioletred", "darkorange")) +
+  
+  facet_wrap(~repo_status) +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Left Fornix",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+#Facet
+
+
+
+#R fornix
+```
+
+
+
+# Progesterone
+
+# FSH
+
+
+# DSP: Solution Index
+
+# MAZE: Accuracy
+
+# LOOP: Degrees Traveled at 3.0m
