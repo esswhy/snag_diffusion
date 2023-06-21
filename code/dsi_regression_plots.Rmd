@@ -32,7 +32,16 @@ df_hormones <- read_csv(here("data", "hormones",
   clean_names() %>% 
   
   #Reorder 
+  mutate(repo_status = fct_relevel(repo_status, 
+                                  c("Pre", "Peri", "Post")))
 
+#Subsets
+df_hormones_pre <- df_hormones %>% 
+  filter(repo_status == "Pre")
+df_hormones_peri <- df_hormones %>% 
+  filter(repo_status == "Peri")
+df_hormones_post <- df_hormones %>% 
+  filter(repo_status == "Post")
 
 #Color scale
   
@@ -41,19 +50,59 @@ df_hormones <- read_csv(here("data", "hormones",
 ```
 
 
+```{r data-dsp}
+#Read in the data
+df_dsp <- read_csv(here("data", "dsp", 
+                    "dsi_dsp_solution_tracts.csv")) %>% 
+  clean_names() %>% 
+  
+  #Reorder 
+  mutate(repo_status = fct_relevel(repo_status, 
+                                  c("Pre", "Peri", "Post")))
+
+#Subsets
+df_dsp_women <- df_dsp %>% 
+  filter(sex == "Female")
+df_dsp_men <- df_dsp %>% 
+  filter(sex == "Male")
+
+
+#Color scale
+  
+  #Change color of points
+  #scale_color_manual(values = c("cadetblue4", "mediumvioletred", "darkorange")) +
+
+#Sex
+#scale_color_manual(values = c("mediumpurple3", "mediumseagreen")) +
+```
+
+```{r data-loop}
+#Read in the data
+df_loop <- read_csv(here("data", "loop", 
+                    "dsi_loop_degrees_tracts.csv")) %>% 
+  clean_names() %>% 
+  
+  #Reorder 
+  mutate(repo_status = fct_relevel(repo_status, 
+                                  c("Pre", "Peri", "Post")))
+
+
+  
+```
+
+
 
 # Estradiol
 
 ## QA
 
-Women with only negative correlations with left cingulum bundle and cingulum frontal parahippocampal
 
-```{r qa-women}
-#L Cingulum
+```{r qa-e-women}
+#L Cingulum Frontal Parietal
 a <- ggplot(data = df_hormones, aes(x = qa_e_cingulum_frontal_parietal_l,
                                y = estradiol_scan_pg_ml)) +
   #Define scatter, change size and alpha
-  geom_point(color = "cyan3",
+  geom_point(color = "mediumpurple3",
              size = 3, alpha = 0.6) +
   
   #Add LM line
@@ -91,7 +140,7 @@ b <- ggplot(data = df_hormones, aes(x = qa_e_cingulum_frontal_parahippocampal_l,
                                y = estradiol_scan_pg_ml)) +
   
   #Define scatter, change size and alpha
-  geom_point(color = "cyan3",
+  geom_point(color = "mediumpurple3",
              size = 3, alpha = 0.6, show.legend = FALSE) +
   
   #Add LM line
@@ -126,17 +175,21 @@ b <- ggplot(data = df_hormones, aes(x = qa_e_cingulum_frontal_parahippocampal_l,
 
 #Plot it
 a+b
-ggsave("qa_e_women.png", dpi=1200)
+#ggsave("qa_e_women.png", dpi=1200)
 ```
+
 ## MD
 
-```{r}
+### Women
+
+
+```{r e-md-women}
 #L fornix
-ggplot(data = df_hormones, aes(x = md_e_fornix_l,
+c <- ggplot(data = df_hormones, aes(x = md_e_fornix_l_women,
                                y = estradiol_scan_pg_ml)) +
   #Define scatter, change size and alpha
-  geom_point(aes(color = repo_status),
-             size = 3, alpha = 0.6) +
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
   
   #Add LM line
   geom_smooth(
@@ -144,12 +197,89 @@ ggplot(data = df_hormones, aes(x = md_e_fornix_l,
     se = FALSE,
     color = "grey50") +
   
-  scale_color_manual(values = c("cadetblue4", "mediumvioletred", "darkorange")) +
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Left Fornix",
+       tag = "C"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
   
-  facet_wrap(~repo_status) +
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+d <- ggplot(data = df_hormones, aes(x = md_e_fornix_r_women,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
   
   #Change labels
-  labs(x = "\nQA Value",
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Right Fornix",
+       tag = "D"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+c+d
+#ggsave("md_e_women.png", dpi=1200)
+```
+
+
+### Pre
+
+```{r e-md-pre}
+#L fornix
+a <- ggplot(data = df_hormones_pre, aes(x = md_e_fornix_l,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "cadetblue4",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
        y = expression(paste(bold("17"),
                             bold(beta),
                             bold("-Estradiol (pg/mL)"))),
@@ -168,25 +298,1317 @@ ggplot(data = df_hormones, aes(x = md_e_fornix_l,
         #Title
         title =element_text(size=14, face="bold"),
         plot.title = element_text(hjust = 0.5)
-        
         )
-
-#Facet
 
 
 
 #R fornix
+b <- ggplot(data = df_hormones_pre, aes(x = md_e_fornix_r,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "cadetblue4",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Right Fornix",
+       tag = "B"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+a+b
+ggsave("md_e_pre.png", dpi=1200)
 ```
 
+### Peri
+
+```{r e-md-peri}
+#L fornix
+c <- ggplot(data = df_hormones_peri, aes(x = md_e_fornix_l,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumvioletred",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Left Fornix",
+       tag = "C"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+d <- ggplot(data = df_hormones_peri, aes(x = md_e_fornix_r,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumvioletred",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Right Fornix",
+       tag = "D"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+c+d
+#ggsave("md_e_peri.png", dpi=1200)
+```
+
+
+### Post
+
+
+```{r e-md-post}
+#L fornix
+e <- ggplot(data = df_hormones_post, aes(x = md_e_fornix_l,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "darkorange",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Left Fornix",
+       tag = "E"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+f <- ggplot(data = df_hormones_post, aes(x = md_e_fornix_r,
+                               y = estradiol_scan_pg_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "darkorange",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold("17"),
+                            bold(beta),
+                            bold("-Estradiol (pg/mL)"))),
+       title = "Right Fornix",
+       tag = "F"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+e+f
+#ggsave("md_e_post.png", dpi=1200)
+```
 
 
 # Progesterone
 
+## QA
+
+```{r qa-p-women}
+#R Cingulum Frontal Parietal
+a <- ggplot(data = df_hormones, aes(x = qa_p_cingulum_frontal_parietal_r,
+                               y = progesterone_scan_ng_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "Progesterone (ng/mL)",
+       title = "Right Cingulum \nFrontal Parietal",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#R Cingulum Parolfactory
+b <- ggplot(data = df_hormones, aes(x = qa_p_cingulum_parolfactory_r,
+                               y = progesterone_scan_ng_ml)) +
+  
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend = FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "Progesterone (mg/mL)",
+       title = "Right Cingulum \nParolfactory",
+       tag = "B",
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#Plot it
+a+b
+#ggsave("qa_p_women.png", dpi=1200)
+```
+
+## MD
+
+### Women
+
+```{r p-md-women}
+
+#R fornix
+ggplot(data = df_hormones, aes(x = md_p_fornix_r_women,
+                               y = progesterone_scan_ng_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Progesterone (ng/mL)",
+       title = "Right Fornix"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#ggsave("md_p_women.png", dpi=1200)
+```
+
+
+### Pre
+
+```{r p-md-pre}
+#L fornix
+ggplot(data = df_hormones_pre, aes(x = md_p_fornix_r,
+                               y = progesterone_scan_ng_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "cadetblue4",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Progesterone (ng/mL)",
+       title = "Right Fornix",
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#ggsave("md_p_pre.png", dpi=1200)
+```
+
+
+### Peri
+
+```{r p-md-pre}
+#L fornix
+ggplot(data = df_hormones_peri, aes(x = md_p_fornix_r,
+                               y = progesterone_scan_ng_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumvioletred",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Progesterone (ng/mL)",
+       title = "Right Fornix",
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#ggsave("md_p_peri.png", dpi=1200)
+```
+
+
+### Post
+
+
+```{r p-md-pre}
+#L fornix
+ggplot(data = df_hormones_post, aes(x = md_p_fornix_r,
+                               y = progesterone_scan_ng_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "darkorange",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Progesterone (ng/mL)",
+       title = "Right Fornix",
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#ggsave("md_p_post.png", dpi=1200)
+```
+
+
+
 # FSH
+
+## QA
+
+```{r qa-fsh-women-negative}
+#L Fornix
+a <- ggplot(data = df_hormones, aes(x = qa_fsh_fornix_l,
+                               y = fsh_scan_miu_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "FSH (mIU/mL)",
+       title = "Left Fornix",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+b <- ggplot(data = df_hormones, aes(x = qa_fsh_fornix_r,
+                               y = fsh_scan_miu_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "FSH (mIU/mL)",
+       title = "Right Fornix",
+       tag = "B"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+a+b
+#ggsave("qa_fsh_women.png", dpi=1200)
+```
+
+
+```{r qa-fsh-women-positive}
+#R Cingulum Frontal Parietal
+c <- ggplot(data = df_hormones, aes(x = qa_fsh_cingulum_frontal_parietal_r,
+                               y = fsh_scan_miu_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "FSH (mIU/mL)",
+       title = "Right Cingulum \nFrontal Parietal",
+       tag = "C"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#R Arcuate Fasciculus
+d <- ggplot(data = df_hormones, aes(x = qa_fsh_acf_r,
+                               y = fsh_scan_miu_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "FSH (mIU/mL)",
+       title = "Right Arcuate \nFasciculus",
+       tag = "D"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#R Superior Longitudinal Fasciculus
+e <- ggplot(data = df_hormones, aes(x = qa_fsh_slf_r,
+                               y = fsh_scan_miu_ml)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nQA Value",
+       y = "FSH (mIU/mL)",
+       title = "Right Superior \nLongitudinal Fasciculus",
+       tag = "E"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        
+        )
+
+
+#Plot
+c+d
+#ggsave("qa_fsh_women_cd.png", dpi=1200)
+d+e
+#ggsave("qa_fsh_women_de.png", dpi=1200)
+
+#ggsave("qa_fsh_women_e.png", dpi=1200)
+
+```
+
+## MD
+
+### Women
+
+```{r}
+#Is MD for FSH skewed: yes
+hist(df_hormones$md_e_fornix_l_women)
+hist(df_hormones$md_e_fornix_r_women)
+```
+
+
+```{r}
+df_hormones_mr <- df_hormones %>% dplyr::select(md_fsh_fornix_l_women,
+                         fsh_scan_miu_ml,
+                         age_scan_years, repo_status_dummy)
+
+model <- lm(md_fsh_fornix_l_women ~ fsh_scan_miu_ml + age_scan_years + repo_status_dummy, data = df_hormones_mr)
+
+car::avPlots(model)
+```
+
+
+```{r md-fsh-women}
+#L Fornix
+a <- ggplot(data = df_hormones, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_l_women))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL)",
+       y = "MD Value",
+       title = "Left Fornix",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+b <- ggplot(data = df_hormones, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_r_women))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Right Fornix",
+       tag = "B"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+a+b
+#ggsave("md_fsh_women_log.png", dpi=1200)
+```
+
+### Pre
+
+```{r fsh-md-pre}
+#L fornix
+c <- ggplot(data = df_hormones_pre, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_l))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "cadetblue4",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Left Fornix",
+       tag = "C"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+d <- ggplot(data = df_hormones_pre, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_r))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "cadetblue4",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Right Fornix",
+       tag = "D"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+c+d
+#ggsave("md_fsh_pre_log.png", dpi=1200)
+```
+
+### Peri
+
+```{r e-md-peri}
+#L fornix
+e <- ggplot(data = df_hormones_peri, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_l))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumvioletred",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Left Fornix",
+       tag = "E"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+f <- ggplot(data = df_hormones_peri, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_r))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumvioletred",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Right Fornix",
+       tag = "F"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+e+f
+#ggsave("md_fsh_peri_log.png", dpi=1200)
+```
+
+
+### Post
+
+
+```{r e-md-post}
+#L fornix
+g <- ggplot(data = df_hormones_post, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_l))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "darkorange",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Left Fornix",
+       tag = "G"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+
+#R fornix
+h <- ggplot(data = df_hormones_post, aes(x = log(fsh_scan_miu_ml),
+                               y = log(md_fsh_fornix_r))) +
+  #Define scatter, change size and alpha
+  geom_point(color = "darkorange",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nFSH (mIU/mL) (log)",
+       y = "MD Value (log)",
+       title = "Right Fornix",
+       tag = "H"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic()+
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+#Plot
+g+h
+#ggsave("md_fsh_post+log.png", dpi=1200)
+```
+
 
 
 # DSP: Solution Index
 
+## MD
+
+### All
+
+```{r}
+#L Fornix
+a <- ggplot(data = df_dsp, aes(x = md_fornix_l_all,
+                               y = dsp_si_true_pct)) +
+  #Define scatter, change size and alpha
+  geom_point(#color = "dodgerblue3",
+             aes(color = sex),
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Solution Index (%)",
+       title = "Left Fornix",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  
+  scale_color_manual(values = c("mediumpurple3", "mediumseagreen")) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#R Fornix
+b <- ggplot(data = df_dsp, aes(x = md_fornix_r_all,
+                               y = dsp_si_true_pct)) +
+  #Define scatter, change size and alpha
+  geom_point(#color = "dodgerblue3",
+             aes(color = sex),
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Solution Index (%)",
+       title = "Right Fornix",
+       tag = "B"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  
+  scale_color_manual(values = c("mediumpurple3", "mediumseagreen")) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+a+b
+
+#ggsave("md_dsp_all.png", dpi=1200)
+```
+
+### Women
+
+```{r}
+#L Fornix
+c <- ggplot(data = df_dsp_women, aes(x = md_fornix_l_sex,
+                               y = dsp_si_true_pct)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Solution Index (%)",
+       title = "Left Fornix",
+       tag = "C"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#R Fornix
+d <- ggplot(data = df_dsp_women, aes(x = md_fornix_r_sex,
+                               y = dsp_si_true_pct)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumpurple3",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Solution Index (%)",
+       title = "Right Fornix",
+       tag = "D"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+c+d
+
+#ggsave("md_dsp_women.png", dpi=1200)
+```
+
+
+### Men
+
+
+```{r}
+#L Fornix
+e <- ggplot(data = df_dsp_men, aes(x = md_fornix_l_sex,
+                               y = dsp_si_true_pct)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumseagreen",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Solution Index (%)",
+       title = "Left Fornix",
+       tag = "E"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#R Fornix
+f <- ggplot(data = df_dsp_men, aes(x = md_fornix_r_sex,
+                               y = dsp_si_true_pct)) +
+  #Define scatter, change size and alpha
+  geom_point(color = "mediumseagreen",
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = "Solution Index (%)",
+       title = "Right Fornix",
+       tag = "F"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+e+f
+
+#ggsave("md_dsp_men.png", dpi=1200)
+```
+
+
 # MAZE: Accuracy
 
 # LOOP: Degrees Traveled at 3.0m
+
+## MD
+
+### All
+
+```{r}
+#L Fornix
+a <- ggplot(data = df_loop, aes(x = md_fornix_l_all,
+                               y = loop_de_rad3_degree)) +
+  #Define scatter, change size and alpha
+  geom_point(#color = "dodgerblue3",
+              aes(color = sex),
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold('Degrees Traveled ('),
+                            bold(degree),
+                            bold(')'))),
+       title = "Left Fornix",
+       tag = "A"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  scale_color_manual(values = c("mediumpurple3", "mediumseagreen")) +
+  
+  geom_hline(yintercept = 360, size=1.8, color = "grey",
+             linetype="dashed") +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+
+#R Fornix
+b <- ggplot(data = df_loop, aes(x = md_fornix_r_all,
+                               y = loop_de_rad3_degree)) +
+  #Define scatter, change size and alpha
+  geom_point(#color = "dodgerblue3",
+             aes(color = sex),
+             size = 3, alpha = 0.6, show.legend=FALSE) +
+  
+  #Add LM line
+  geom_smooth(
+    method = lm,
+    se = FALSE,
+    color = "grey50") +
+  
+  geom_hline(yintercept = 360, size=1.8, color = "grey",
+             linetype="dashed") +
+  
+  scale_color_manual(values = c("mediumpurple3", "mediumseagreen")) +
+  
+  #Change labels
+  labs(x = "\nMD Value",
+       y = expression(paste(bold('Degrees Traveled ('),
+                            bold(degree),
+                            bold(')'))),
+       title = "Right Fornix",
+       tag = "B"
+       #caption = "Smoothing applied using `method = lm` and `formula = y ~ poly(x, 2)`"
+       ) +
+  
+  theme_classic() +
+  
+  #Customize theme
+  theme(axis.title = element_text(size = 13.5, face = "bold"),
+        axis.title.x = element_text(vjust = 2),
+        axis.text = element_text(size= 13),
+        
+        #Title
+        title =element_text(size=14, face="bold"),
+        plot.title = element_text(hjust = 0.5)
+        )
+
+a+b
+
+#ggsave("md_loop_all.png", dpi=1200)
+```
+
